@@ -1,0 +1,39 @@
+[28-Mar-2023 13:10:16 UTC] PHP Fatal error:  Uncaught ErrorException: strtolower(): Passing null to parameter #1 ($string) of type string is deprecated in /home/nocash/public_html/nocash/vendor/codeigniter4/framework/system/Validation/FormatRules.php:253
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(8192, 'strtolower(): P...', '/home/nocash/pu...', 253)
+#1 /home/nocash/public_html/nocash/vendor/codeigniter4/framework/system/Validation/FormatRules.php(253): strtolower(NULL)
+#2 /home/nocash/public_html/nocash/vendor/codeigniter4/framework/system/HTTP/RequestTrait.php(151): CodeIgniter\Validation\FormatRules->valid_ip('45.140.189.118')
+#3 /home/nocash/public_html/nocash/app/Views/errors/html/error_exception.php(209): CodeIgniter\HTTP\Request->getIPAddress()
+#4 /home/nocash/public_html/nocash/vendor/codeigniter4/framework/system/Debug/Exceptions.php(229): include('/home/nocash/pu...')
+#5 /home/nocash/public_html/nocash/vendor/codeigniter4/framework/system/Debug/Exceptions.php(232): CodeIgniter\Debug\Exceptions->CodeIgniter\Debug\{closure}()
+#6 /home/nocash/public_html/nocash/vendor/codeigniter4/framework/system/Debug/Exceptions.php(116): CodeIgniter\Debug\Exceptions->render(Object(Error), 500)
+#7 [internal function]: CodeIgniter\Debug\Exceptions->exceptionHandler(Object(Error))
+#8 {main}
+  thrown in /home/nocash/public_html/nocash/vendor/codeigniter4/framework/system/Validation/FormatRules.php on line 253
+[05-Apr-2023 10:59:31 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function json_decode() in /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php:85
+Stack trace:
+#0 /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php(117): Kint\Utils::composerGetExtras()
+#1 /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/init.php(54): Kint\Utils::composerSkipFlags()
+#2 /home/vipmod/public_html/sharkop.tk/vendor/composer/autoload_real.php(69): require('/home/vipmod/pu...')
+#3 /home/vipmod/public_html/sharkop.tk/vendor/composer/autoload_real.php(59): composerRequire4aec83fbb7957d041cf262f28c660f81('3917c79c5052b27...', '/home/vipmod/pu...')
+#4 /home/vipmod/public_html/sharkop.tk/vendor/autoload.php(7): ComposerAutoloaderInit4aec83fbb7957d041cf262f28c660f81::getLoader()
+#5 /home/vipmod/public_html/sharkop.tk/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(307): include('/home/vipmod/pu...')
+#6 /home/vipmod/public_html/sharkop.tk/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(105): Code in /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php on line 85
+[05-Apr-2023 10:59:33 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function json_decode() in /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php:85
+Stack trace:
+#0 /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php(117): Kint\Utils::composerGetExtras()
+#1 /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/init.php(54): Kint\Utils::composerSkipFlags()
+#2 /home/vipmod/public_html/sharkop.tk/vendor/composer/autoload_real.php(69): require('/home/vipmod/pu...')
+#3 /home/vipmod/public_html/sharkop.tk/vendor/composer/autoload_real.php(59): composerRequire4aec83fbb7957d041cf262f28c660f81('3917c79c5052b27...', '/home/vipmod/pu...')
+#4 /home/vipmod/public_html/sharkop.tk/vendor/autoload.php(7): ComposerAutoloaderInit4aec83fbb7957d041cf262f28c660f81::getLoader()
+#5 /home/vipmod/public_html/sharkop.tk/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(307): include('/home/vipmod/pu...')
+#6 /home/vipmod/public_html/sharkop.tk/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(105): Code in /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php on line 85
+[05-Apr-2023 11:30:41 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function json_decode() in /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php:85
+Stack trace:
+#0 /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php(117): Kint\Utils::composerGetExtras()
+#1 /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/init.php(54): Kint\Utils::composerSkipFlags()
+#2 /home/vipmod/public_html/sharkop.tk/vendor/composer/autoload_real.php(69): require('/home/vipmod/pu...')
+#3 /home/vipmod/public_html/sharkop.tk/vendor/composer/autoload_real.php(59): composerRequire4aec83fbb7957d041cf262f28c660f81('3917c79c5052b27...', '/home/vipmod/pu...')
+#4 /home/vipmod/public_html/sharkop.tk/vendor/autoload.php(7): ComposerAutoloaderInit4aec83fbb7957d041cf262f28c660f81::getLoader()
+#5 /home/vipmod/public_html/sharkop.tk/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(307): include('/home/vipmod/pu...')
+#6 /home/vipmod/public_html/sharkop.tk/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(105): Code in /home/vipmod/public_html/sharkop.tk/vendor/kint-php/kint/src/Utils.php on line 85
