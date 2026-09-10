@@ -83,13 +83,38 @@ npm start
 
 ---
 
-## 4. Deploy to Vercel
+## 4. Deploy to Vercel (free tier)
 
-1. Push this repository to GitHub.
+This project is pre-configured for Vercel (`vercel.json`, Next.js framework preset,
+Node 20+ pinned via `engines` and `.nvmrc`).
+
+1. Push this repository to GitHub:
+   ```bash
+   git add -A && git commit -m "Ready for Vercel" && git push
+   ```
 2. In [vercel.com](https://vercel.com), **Add New → Project** and import the repo.
-   Vercel auto-detects Next.js — no build configuration is needed.
-3. Under **Environment Variables**, add the four variables above.
-4. Deploy.
+   Vercel auto-detects Next.js — leave the build settings as default.
+3. Add the environment variables as **encrypted secrets**:
+   - **Project → Settings → Environment Variables** → add each of the four values
+     from `.env.example`.
+   - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are *public*
+     (they are embedded in the browser bundle — that is expected and safe, because
+     Supabase Row Level Security protects your data).
+   - `SUPABASE_SERVICE_ROLE_KEY` and `STATIC_WORDS` are *secret* — they are used
+     **only** in server-side code and are never sent to the browser. Do **not**
+     prefix them with `NEXT_PUBLIC_`.
+   - Apply the variables to **Production** and **Preview** environments, then
+     redeploy (Vercel does not propagate new variables to existing deployments
+     automatically).
+4. Deploy. Your app is live at `https://<project>.vercel.app`.
+
+### Security notes
+
+- The service-role key bypasses Row Level Security and is required only for
+  registration (creating users) and the `/api/connect` endpoint. It never leaves
+  the server.
+- Set `STATIC_WORDS` to a long random value (`openssl rand -hex 32`) so activation
+  tokens can't be forged.
 
 ---
 
