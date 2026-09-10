@@ -1,63 +1,145 @@
-# CodeIgniter 4 Application Starter
+# NOCASH Panel
 
-## What is CodeIgniter?
+A license-key management panel rebuilt on a modern, production-ready stack:
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+- **Frontend:** Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS v4
+- **Backend / database:** Supabase (PostgreSQL + Auth + Row Level Security)
+- **Hosting:** Vercel (free tier)
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+It replaces the original CodeIgniter 4 application (archived in [`legacy/`](legacy/)) with
+the same functionality: referral-gated registration, key generation & management,
+admin user management, server settings, and the client-facing licensing endpoint.
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+---
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+## Features
 
-## Installation & updates
+- Email + password authentication (Supabase Auth), with referral-code-gated registration
+- Dashboard with live stats and recent activity
+- Key generation (bulk or custom), search / filter / sort / paginate, edit, delete,
+  and one-click download of keys
+- Admin: user management, referral code management, server settings
+- `/api/connect` licensing endpoint — validates keys, binds device serials,
+  returns an activation token and mod metadata
+- Responsive UI with light/dark theme, clean typography (Inter), and Lucide icons
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+---
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+## 1. Create a Supabase project
 
-## Setup
+1. Go to [supabase.com](https://supabase.com) and create a free project.
+2. Open **SQL Editor → New query**, paste the entire contents of
+   [`supabase/schema.sql`](supabase/schema.sql), and run it.
+3. Create your first admin account:
+   - **Authentication → Users → Add user** (enter an email + password, enable
+     "Auto Confirm User").
+   - In the SQL editor, promote that user to admin:
+     ```sql
+     update public.profiles
+     set username = 'ADMIN', level = 1, saldo = 999999
+     where id = (select id from auth.users where email = 'you@example.com');
+     ```
+4. Grab your API keys from **Project Settings → API**:
+   - Project URL
+   - `anon` public key
+   - `service_role` key (keep this secret)
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+> After setup, log in as the admin and create referral codes from
+> **Admin → Referrals** so resellers can register.
 
-## Important Change with index.php
+---
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+## 2. Configure environment variables
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+Copy `.env.example` to `.env.local` and fill in your values:
 
-**Please** read the user guide for a better explanation of how CI4 works!
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR-ANON-PUBLIC-KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR-SERVICE-ROLE-KEY
+STATIC_WORDS=change-me-to-a-long-random-string
+```
 
-## Repository Management
+`SUPABASE_SERVICE_ROLE_KEY` and `STATIC_WORDS` are server-only secrets — never expose
+them in client code.
 
-We use Github issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+---
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## 3. Run locally
 
-## Server Requirements
+```bash
+npm install
+npm run dev
+```
 
-PHP version 7.3 or higher is required, with the following extensions installed:
+Open [http://localhost:3000](http://localhost:3000).
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+Production build:
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+```bash
+npm run build
+npm start
+```
 
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)
+---
+
+## 4. Deploy to Vercel
+
+1. Push this repository to GitHub.
+2. In [vercel.com](https://vercel.com), **Add New → Project** and import the repo.
+   Vercel auto-detects Next.js — no build configuration is needed.
+3. Under **Environment Variables**, add the four variables above.
+4. Deploy.
+
+---
+
+## Licensing endpoint (`/api/connect`)
+
+The cheat/launcher client authenticates against this endpoint.
+
+**Request** (JSON or form-encoded):
+
+```json
+{
+  "game": "PUBG",
+  "user_key": "24xADMINxAb3k9",
+  "serial": "DEVICE-SERIAL"
+}
+```
+
+**Success:**
+
+```json
+{
+  "ok": true,
+  "token": "…",
+  "modname": "NOCASH KURO PANEL",
+  "telegram": "@NOCASH_xD",
+  "floating_text": "@NOCASH_xD",
+  "floating_status": "Safe",
+  "expiry": "2026-09-11T12:00:00.000Z",
+  "rng": 1757500000000
+}
+```
+
+**Errors** return `{ "ok": false, "error": "key_not_found" | "key_inactive" | "key_expired" | "device_limit" | "maintenance" | "missing_fields" }`.
+
+---
+
+## Project structure
+
+```
+src/
+  app/
+    (dashboard)/        # authenticated area (dashboard, keys, admin, settings)
+    login/ register/    # auth pages
+    api/connect/        # licensing endpoint
+  components/           # UI + feature components
+  lib/
+    actions/            # server actions (business logic)
+    supabase/           # browser / server / admin clients
+    config.ts           # games, durations, pricing
+    settings.ts         # server settings helpers
+    types.ts utils.ts
+supabase/schema.sql     # database schema + RLS policies
+```
