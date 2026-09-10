@@ -33,7 +33,9 @@ admin user management, server settings, and the client-facing licensing endpoint
 3. Create your first admin account:
    - **Authentication → Users → Add user** (enter an email + password, enable
      "Auto Confirm User").
-   - In the SQL editor, promote that user to admin:
+   - In the SQL editor, run [`supabase/seed-admin.sql`](supabase/seed-admin.sql)
+     (promotes that user to admin and optionally creates a starter referral code).
+     Or manually:
      ```sql
      update public.profiles
      set username = 'ADMIN', level = 1, saldo = 999999
